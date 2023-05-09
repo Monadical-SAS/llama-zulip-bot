@@ -12,8 +12,14 @@ app.use(express.json());
 
 app.post("/llamaChat", async (req, res) => {
   const { message } = req.body;
-  console.log(message);
-  console.log({ response: await askllama(message) });
+  const { tokens } = await askllama(message);
+  console.log(tokens);
+  const responseString = tokens.filter((t) => t !== "\n\n<end>\n").join("");
+  const response = responseString.slice(0, responseString.indexOf("USER"));
+
+  res.json({
+    response,
+  });
 });
 
 init().then(() =>
@@ -21,14 +27,3 @@ init().then(() =>
     console.log(`application is running at: http://localhost:${port}`);
   })
 );
-
-function shutDown(signal) {
-  console.log(signal);
-  server.close(() => {
-    process.exit(0);
-  });
-}
-
-process.on("SIGINT", shutDown);
-process.on("SIGQUIT", shutDown);
-process.on("SIGTERM", shutDown);

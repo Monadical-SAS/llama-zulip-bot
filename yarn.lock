@@ -10,7 +10,7 @@
     "@llama-node/core" "0.1.0"
     yargs "^17.7.1"
 
-"@llama-node/core@0.1.0":
+"@llama-node/core@0.1.0", "@llama-node/core@^0.1.0":
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/@llama-node/core/-/core-0.1.0.tgz#22ad5051266f8000e281f1a6f6a60d6072bb2c73"
   integrity sha512-RRYj9QQB5ZvitH5Z3aCVMMyd9YdrZ89KZw43fV2npCl5vto9dWlzmyGvQnZAuKR2WBG1P6eWXuwlLtx7bfa3Tw==
