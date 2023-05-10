@@ -20,15 +20,23 @@ async function main() {
     events.forEach(async (event) => {
       last_event_id = Math.max(last_event_id, Number(event.id));
       const isMentioned = event.flags?.includes("mentioned");
-      console.log(event.message);
-      if (isMentioned && event.type === "message") {
-        const content = await askllama({ question: event.message.content });
+      console.log(event);
+      if (
+        event.type === "message" &&
+        event.message.type === "private" &&
+        event.message.sender_full_name !== "gptBot"
+      ) {
+        console.log(event.message);
+        const content = await askllama({
+          question: `My name is ${event.message.sender_full_name}. Answer this question: ${event.message.content}`,
+        });
+        console.log(content);
         await client.messages.send({
           to: event.message.sender_email,
           type: "private",
           //type: 'stream',
           subject: "Testing gptBot",
-          content,
+          content: content.replace("(answers the question)", ""),
         });
       }
     });

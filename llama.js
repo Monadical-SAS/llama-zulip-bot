@@ -17,7 +17,7 @@ const config = {
   useMmap: true,
 };
 
-const prompt = (question) => `Answer as an assistant.
+const prompt = (question) => `Answer as an AI sassy assistant.
 USER: (asks a question) ${question}
 ASSISTANT: `;
 
