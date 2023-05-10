@@ -1,7 +1,7 @@
 import { createServer } from "http";
 import express from "express";
 import bodyParser from "body-parser";
-import { askllama, init } from "./llama.js";
+import { askllama, init, llamaParams } from "./llama.js";
 
 const app = express();
 const server = createServer(app);
@@ -10,13 +10,12 @@ const port = process.env.PORT || 8000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(express.json());
 
-app.post("/llamaChat", async (req, res) => {
+app.post("/chat", async (req, res) => {
   const { message } = req.body;
-  const { tokens } = await askllama(message);
-  console.log(tokens);
-  const responseString = tokens.filter((t) => t !== "\n\n<end>\n").join("");
-  const response = responseString.slice(0, responseString.indexOf("USER"));
 
+  console.log(`Request: ${message}`);
+  const response = await askllama({ question: message });
+  console.log("Finished");
   res.json({
     response,
   });
@@ -25,5 +24,6 @@ app.post("/llamaChat", async (req, res) => {
 init().then(() =>
   server.listen(port, () => {
     console.log(`application is running at: http://localhost:${port}`);
+    console.log("Using llama params:\n", llamaParams());
   })
 );
